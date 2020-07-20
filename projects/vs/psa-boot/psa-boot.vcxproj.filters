@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="MainForm.cpp" />
+    <ClCompile Include="..\..\..\source\simulator\simulation.c">
+      <Filter>simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\main.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainForm.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="simulation">
+      <UniqueIdentifier>{cf487abf-64d0-4e7d-94a9-4368161cbbd9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
