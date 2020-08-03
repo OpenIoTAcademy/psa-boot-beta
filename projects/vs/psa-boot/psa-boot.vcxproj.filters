@@ -6,6 +6,180 @@
       <Filter>simulation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\source\main.c" />
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\aes.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\aesni.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\arc4.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\aria.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\asn1parse.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\asn1write.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\base64.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\bignum.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\blowfish.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\camellia.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\ccm.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\chacha20.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\chachapoly.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\cipher.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\cipher_wrap.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\cmac.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\ctr_drbg.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\des.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\dhm.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\ecdh.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\ecdsa.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\ecjpake.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\ecp.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\ecp_curves.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\error.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\gcm.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\havege.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\hkdf.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\hmac_drbg.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\md.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\md2.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\md4.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\md5.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\memory_buffer_alloc.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\nist_kw.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\oid.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\padlock.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\pem.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\pk.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\pk_wrap.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\pkcs5.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\pkcs12.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\pkparse.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\pkwrite.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\platform.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\platform_util.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\poly1305.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\ripemd160.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\rsa.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\rsa_internal.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\sha1.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\sha256.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\sha512.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\threading.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\timing.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\version.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\version_features.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\external\mbed-crypto\library\xtea.c">
+      <Filter>external\mbed-crypto</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainForm.h" />
@@ -13,6 +187,12 @@
   <ItemGroup>
     <Filter Include="simulation">
       <UniqueIdentifier>{cf487abf-64d0-4e7d-94a9-4368161cbbd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{4c237d32-8c2d-4153-b74b-7725f63bca5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\mbed-crypto">
+      <UniqueIdentifier>{518eee32-59b2-4054-81ea-6e99ee124e67}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
