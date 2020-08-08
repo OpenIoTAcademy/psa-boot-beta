@@ -1,4 +1,5 @@
 ﻿  main.c
+C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\source\main.c(72,1): warning C4047: 'initializing': 'unsigned char' differs in levels of indirection from 'char *'
   MainForm.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
   MainForm.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   psa-boot.vcxproj -> C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\projects\vs\Debug\psa-boot.exe
