@@ -1,10 +1,14 @@
 
-#include "simulation.h"
+#include "./simulator/simulation.h"
 
 /* Remove the include */
 #include <windows.h> // only runs on Windows
 
-#include "aes.h"
+#include "C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\external\mbed-crypto\include\mbedtls/aes.h"
+#include "C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\external\mbed-crypto\include\mbedtls/config.h"
+#include <stdio.h>
+
+
 
 #define EXAMPLE_AES_KEY_LEN_IN_BITS		256
 #define EXAMPLE_AESKEY_LEN_IN_BYTES		(EXAMPLE_AES_KEY_LEN_IN_BITS / 8)
@@ -15,7 +19,12 @@ extern int Boot_Log(char* format, ...);
 int main(void) {
 
 	Sleep(100);
-
+	FILE* fp;
+	fp = fopen("file1.txt", "a+");
+	fputs("ZAYAIntership Training1,", fp);
+	fclose(fp);
+	/*fprintf(fp, "Learning C with ZAYA\n");
+	fclose(fp);*/
 	Boot_Log("Hello World!");
 
 	mbedtls_aes_context aes;
@@ -45,4 +54,5 @@ int main(void) {
 	}
 
 	return 0;
+
 }
