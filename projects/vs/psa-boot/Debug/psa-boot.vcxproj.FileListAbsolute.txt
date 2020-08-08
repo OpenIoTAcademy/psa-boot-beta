@@ -1,0 +1,3 @@
+C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\projects\vs\psa-boot\Debug\psa-boot.vcxprojAssemblyReference.cache
+C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\projects\vs\psa-boot\Debug\PCIPTS.MainForm.resources
+C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\projects\vs\psa-boot\Debug\psa-boot.vcxproj.GenerateResource.cache

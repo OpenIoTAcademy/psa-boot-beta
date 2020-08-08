@@ -1,0 +1,4 @@
+﻿  main.c
+  MainForm.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
+  MainForm.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  psa-boot.vcxproj -> C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\projects\vs\Debug\psa-boot.exe
