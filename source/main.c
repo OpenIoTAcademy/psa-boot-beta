@@ -20,7 +20,7 @@ extern int Boot_Log(char* format, ...);
 
 int main(void) {
 
-	Sleep(100);
+	
 	FILE* fp;
 	fp = fopen("file1.txt", "w+");
 	fputs("ZAYAIntership Training1,", fp);
@@ -65,22 +65,27 @@ int main(void) {
 
 
 	unsigned char iv[AES_IV_LENGTH];
+	unsigned char iv2[AES_IV_LENGTH];
+
 	/* TODO create an IV ; Just set random values here */
 
 	unsigned char input[16] = "ZAYA Internship";
 	unsigned char output[16 + 1];
 	unsigned char crptinput[] = { buffer};
-	//unsigned char crptoutput[16 + 1];
+	unsigned char crptoutput[16 + 1];
 
 
 	mbedtls_aes_setkey_enc(&aes, key, EXAMPLE_AES_KEY_LEN_IN_BITS);
 
-	// mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, 16, iv, input, output);
+	 //mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, 16, iv, input, output);
 	mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, 16, iv,crptinput, output);
+	mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, 16, iv2, buffer, crptoutput);
+	
 	output[16] = '\0'; /* Let us terminate the cipher text */
 
-	Boot_Log("The Plain Text   : %s", crptinput);
+	Boot_Log("The Plain Text   : %s", input);
 	Boot_Log("The Cipher Text  : %s", output);
+	Boot_Log("The Cipher Text  : %s", crptoutput);
 
 	int cnt = 0;
 	/*while (1) {
