@@ -1,3 +1,0 @@
-C:\Users\Elif\Desktop\10082020_traning1\projects\vs\psa-boot\Debug\psa-boot.vcxprojAssemblyReference.cache
-C:\Users\Elif\Desktop\10082020_traning1\projects\vs\psa-boot\Debug\PCIPTS.MainForm.resources
-C:\Users\Elif\Desktop\10082020_traning1\projects\vs\psa-boot\Debug\psa-boot.vcxproj.GenerateResource.cache
