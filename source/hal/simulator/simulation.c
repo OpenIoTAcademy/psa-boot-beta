@@ -11,7 +11,7 @@ void SIM_RegisterLOGCallback(LOGCB logCB)
 	SIMLogPrint = logCB;
 }
 
-int Boot_Log(char* format, ...)
+int hal_log_printf(char* format, ...)
 {
 	static char logBuffer[512];
 	va_list args;

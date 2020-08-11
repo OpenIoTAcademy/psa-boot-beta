@@ -2,10 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="MainForm.cpp" />
-    <ClCompile Include="..\..\..\source\simulator\simulation.c">
-      <Filter>simulation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\source\main.c" />
     <ClCompile Include="..\..\..\external\mbed-crypto\library\aes.c">
       <Filter>external\mbed-crypto</Filter>
     </ClCompile>
@@ -180,19 +176,27 @@
     <ClCompile Include="..\..\..\external\mbed-crypto\library\xtea.c">
       <Filter>external\mbed-crypto</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\source\hal\simulator\hal_timer.c">
+      <Filter>hal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\boot_security.c" />
+    <ClCompile Include="..\..\..\source\boot.c" />
+    <ClCompile Include="..\..\..\source\hal\simulator\simulation.c">
+      <Filter>hal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainForm.h" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="simulation">
-      <UniqueIdentifier>{cf487abf-64d0-4e7d-94a9-4368161cbbd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="external">
       <UniqueIdentifier>{4c237d32-8c2d-4153-b74b-7725f63bca5c}</UniqueIdentifier>
     </Filter>
     <Filter Include="external\mbed-crypto">
       <UniqueIdentifier>{518eee32-59b2-4054-81ea-6e99ee124e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hal">
+      <UniqueIdentifier>{99d8cdd3-750b-462d-9555-09ea5e40482a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
