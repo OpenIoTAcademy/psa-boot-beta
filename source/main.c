@@ -35,65 +35,45 @@ int main(void) {
 	fseek(f_pointer, 0, SEEK_END);
 	long file_size = ftell(f_pointer);
 	rewind(f_pointer);
-	unsigned char* input = (char*)malloc(file_size * sizeof(char));
-
+	int rounded_file_size = (((file_size + 15) / 16) * 16);
+	unsigned char* input = malloc(rounded_file_size);
 	if (f_pointer == NULL) {
 		printf("Could not open file %s", filename);
 		/*return 1;*/
 	}
-	while (fgets(input, file_size + 1, f_pointer) != NULL) {
-		Boot_Log("important : %s", input);
-
-
-	}
+	
+	fread(input, 1, file_size, f_pointer);
 	fclose(f_pointer);
-	unsigned char* enc_output = (char*)malloc((file_size + 2) * sizeof(char));
-	unsigned char* dec_output = (char*)malloc((file_size + 2) * sizeof(char));
+	input[file_size] = 0;
+	
+	unsigned char* enc_output = (char*)malloc(rounded_file_size);
+	unsigned char* dec_output = (char*)malloc(rounded_file_size);
 
 
 	mbedtls_aes_setkey_enc(&aes, key, EXAMPLE_AES_KEY_LEN_IN_BITS);
-
-
 	/*enc_output[16] = '\0'; /* Let us terminate the cipher text */
-	/*If-else structures are added for flexibilty. EXP: "Example Binary File" text contains 19 characters, AES with 16 is powerless for this.
-	AES with 32 can encrypt and decrypt successfully.Additionally, "Internship" text contains 10 char. , AES with 16 can handle succesfully.*/
-
-	if (file_size <= 16)
-	{
-		mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, 16, iv, input, enc_output);
-	}
-	else if ((file_size > 16) && (file_size <= 32))
-	{
-		mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, 32, iv, input, enc_output);
-	}
-	else if ((file_size > 32) && (file_size <= 64))
-	{
-		mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, 64, iv, input, enc_output);
-	}
+	mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, rounded_file_size, iv, input, enc_output);
+	
 	Boot_Log("The Plain Text   : %s", input);
 	Boot_Log("The Cipher Text  : %s", enc_output);
 
 	mbedtls_aes_setkey_dec(&aes, key, EXAMPLE_AES_KEY_LEN_IN_BITS);
-
-	if (file_size <= 16)
-	{
-		mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, 16, iv2, enc_output, dec_output);
-	}
-	else if ((file_size > 16) && (file_size <= 32))
-	{
-		mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, 32, iv2, enc_output, dec_output);
-	}
-	else if ((file_size > 32) && (file_size <= 64))
-	{
-		mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, 64, iv2, enc_output, dec_output);
-	}
+	mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, rounded_file_size, iv2, enc_output, dec_output);
+	
 
 	Boot_Log("The decrypted text: %s", dec_output);
+	
+	free(input);
+	free(enc_output);
+	free(dec_output);
+	
 	int cnt = 0;
 	while (1) {
 		Sleep(1000);
 		Boot_Log("I am alive!");
 	}
-
+	
+	
+	
 	return 0;
 }
