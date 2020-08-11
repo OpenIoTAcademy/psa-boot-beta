@@ -24,7 +24,7 @@ int main(void) {
 	mbedtls_aes_context aes ;
 //	FILE* fp = fopen("file1.txt", "w+");
 //	fputs("ZAYAIntership Training1,", fp);
-	FILE* fpt = fopen("file.txt", "r");
+	FILE* fpt = fopen("file.txt", "rb");
 	fseek(fpt, 0, SEEK_END);
 	long fsize = ftell(fpt);
 	fseek(fpt, 0, SEEK_SET);  /* same as rewind(f); */
@@ -79,12 +79,7 @@ int main(void) {
 	while (1) {
 		Boot_Log("The Decrypted Text  : %s", decrypt_output);
 
-		int cnt = 0;
-		while (1) {
-			Sleep(1000);
-			Boot_Log("I am alive!");
-		}
-
+		
 		return 0;
 
 	}
