@@ -1,9 +1,4 @@
 ﻿  main.c
-C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\source\main.c(57,16): error C2369: 'output': redefinition; different subscripts
-C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\source\main.c(52): message : see declaration of 'output'
-C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\source\main.c(61,73): warning C4047: 'function': 'unsigned char *' differs in levels of indirection from 'unsigned char *[1]'
-C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\source\main.c(61,67): warning C4024: 'mbedtls_aes_crypt_cbc': different types for formal and actual parameter 6
-C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\source\main.c(72,72): warning C4047: 'function': 'unsigned char *' differs in levels of indirection from 'unsigned char *[1]'
-C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\source\main.c(72,66): warning C4024: 'mbedtls_aes_crypt_cbc': different types for formal and actual parameter 6
-C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\source\main.c(76,66): warning C4047: 'function': 'const unsigned char *' differs in levels of indirection from 'unsigned char *[1]'
-C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\source\main.c(76,60): warning C4024: 'mbedtls_aes_crypt_cbc': different types for formal and actual parameter 5
+  MainForm.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
+  MainForm.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  psa-boot.vcxproj -> C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\projects\vs\Debug\psa-boot.exe

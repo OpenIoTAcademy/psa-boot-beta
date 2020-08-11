@@ -1,11 +1,11 @@
-#include "./simulator/simulation.h"
+#include "./simulation.h"
 
 /* Remove the include */
 #include <windows.h> // only runs on Windows
 
-#include "C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\external\mbed-crypto\include\mbedtls/aes.h"
+
 #include "C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\external\mbed-crypto\include\mbedtls/config.h"
-#include <aes.h>
+#include"aes.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,24 +21,23 @@ int main(void) {
 
 	Boot_Log("Hello World!");
 
-
-
 	mbedtls_aes_context aes ;
 //	FILE* fp = fopen("file1.txt", "w+");
 //	fputs("ZAYAIntership Training1,", fp);
-	FILE* fpt = fopen("file.txt", "rb");
+	FILE* fpt = fopen("file.txt", "r");
 	fseek(fpt, 0, SEEK_END);
 	long fsize = ftell(fpt);
 	fseek(fpt, 0, SEEK_SET);  /* same as rewind(f); */
 
-	char* string = malloc(fsize + 1);
-	fread(string, 1, fsize, fpt);
+	char* string1 = malloc(fsize + 1);
+	fread(string1, 1, fsize, fpt);
 
 	fclose(fpt);
 	//fclose(fp);
 	/* File pointer to hold reference to our file */
 
-	string[fsize] = 0;
+	string1[fsize] = 0;
+
 
 	unsigned char key[EXAMPLE_AESKEY_LEN_IN_BYTES];
 	/* TODO create an AES Key ; Just set random values here */
@@ -49,19 +48,16 @@ int main(void) {
 	/* TODO create an IV ; Just set random values here */
 
 
-	unsigned char* output[] = malloc(((fsize + 15) / 16) * 16);
+	unsigned char* output = malloc(((fsize + 15) / 16) * 16);
 	unsigned char* decrypt_output = malloc(((fsize + 15) / 16) * 16);
-	
-	
-	unsigned char input[16] = "ZAYA Internship";
-	unsigned char output[16 +1 ];
 	mbedtls_aes_setkey_enc(&aes, key, EXAMPLE_AES_KEY_LEN_IN_BITS);
-
-
-	mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, 16, iv, string, output);
-
 	
-	Boot_Log("The Plain Text   : %s", string);
+	mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_ENCRYPT, 16, iv, string1, output);
+	//output[16] = '\0';
+	unsigned char input[16] = "ZAYA Internship";
+	//unsigned char output[16 +1];
+			
+	Boot_Log("The Plain Text   : %s", string1);
 	//Boot_Log("The Cipher Text  : %s", output);
 //	Boot_Log("The iv Text  : %s", iv);
 //	Boot_Log("The key Text  : %s", key);
@@ -84,10 +80,10 @@ int main(void) {
 		Boot_Log("The Decrypted Text  : %s", decrypt_output);
 
 		int cnt = 0;
-		/*while (1) {
+		while (1) {
 			Sleep(1000);
 			Boot_Log("I am alive!");
-		}*/
+		}
 
 		return 0;
 
