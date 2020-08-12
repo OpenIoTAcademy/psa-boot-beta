@@ -6,7 +6,7 @@
 
 typedef struct
 {
-    uint32_t dummy;
+ 
     uint8_t prefix[4];
     uint32_t version;
     uint32_t size;
@@ -16,7 +16,7 @@ typedef struct
 typedef struct
 {
     boot_image_metadata_t metadata;
-    uint32_t image;
+    uint8_t image[1];
     /* TODO image here */
 } boot_upgrade_package_t;
 
