@@ -1,3 +1,4 @@
+
 #ifndef __UPGRADE_PACKAGE_H
 #define __UPGRADE_PACKAGE_H
 
@@ -9,7 +10,6 @@
 
 typedef struct
 {
-
     /* Upgrade Package Metadata Prefix : Must be ZAYA */
     uint8_t prefix[4];
     /* Version of the image/application */
@@ -29,7 +29,6 @@ typedef struct
     boot_image_metadata_t metadata;
     /* Application */
     uint8_t image[1];
-    /* TODO image here */
 
 } boot_upgrade_package_t;
 
