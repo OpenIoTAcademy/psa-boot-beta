@@ -1,6 +1,0 @@
-C:\Users\Kübra\psa-boot-beta2\psa-boot-beta\projects\vs\psa-boot\Debug\psa-boot.vcxprojAssemblyReference.cache
-C:\Users\Kübra\psa-boot-beta2\psa-boot-beta\projects\vs\psa-boot\Debug\PCIPTS.MainForm.resources
-C:\Users\Kübra\psa-boot-beta2\psa-boot-beta\projects\vs\psa-boot\Debug\psa-boot.vcxproj.GenerateResource.cache
-C:\Users\Kübra\psa-boot-beta\projects\vs\psa-boot\Debug\psa-boot.vcxprojAssemblyReference.cache
-C:\Users\Kübra\psa-boot-beta\projects\vs\psa-boot\Debug\PCIPTS.MainForm.resources
-C:\Users\Kübra\psa-boot-beta\projects\vs\psa-boot\Debug\psa-boot.vcxproj.GenerateResource.cache
