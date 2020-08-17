@@ -17,6 +17,8 @@ typedef struct
     /* Image size */
     uint32_t size;
     uint8_t reserved[4];
+    /* Decryption initialization vector*/
+    uint8_t iv[16];
     /* Signature */
     uint8_t signature[128];
 } boot_image_metadata_t;
