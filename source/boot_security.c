@@ -17,5 +17,5 @@ void boot_decrypt_upgrade_package(boot_upgrade_package_t* package)
     uint8_t* output = input;
    
     mbedtls_aes_setkey_dec(&aes, key, EXAMPLE_AES_KEY_LEN_IN_BITS);
-    mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, package->metadata.size, package->metadata.iv, input, output);
+    mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, package->metadata.size,package->metadata.iv, input, output);
 }
