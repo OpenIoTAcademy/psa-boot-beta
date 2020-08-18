@@ -63,14 +63,13 @@ void boot_decrypt_upgrade_package(boot_upgrade_package_t* package)
 /*
 * Image represents upgrade package in this function,
 * we use the image such as input  
-* Security critical metadata that is associated with an image.
-* Metadata contains parameters for decryption function.
+* 
 */
-    
+  
     uint8_t* input = package->image;
        
-/*
-*We will be decrypting the same memory location
+
+/*We will be decrypting the same memory location
 *so let the input and the output be the same.
 */
     uint8_t* output = input;
