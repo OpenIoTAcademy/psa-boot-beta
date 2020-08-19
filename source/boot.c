@@ -11,10 +11,6 @@
 #define PSA_VERSION_VER_MAJOR			0
 #define PSA_VERSION_VER_MINOR			1
 
-#define EXAMPLE_AES_KEY_LEN_IN_BITS		256
-#define EXAMPLE_AESKEY_LEN_IN_BYTES		(EXAMPLE_AES_KEY_LEN_IN_BITS / 8)
-#define AES_IV_LENGTH					(16)
-
 bool check_for_upgrade(void)
 {
 	return true;
@@ -22,12 +18,16 @@ bool check_for_upgrade(void)
 
 uint32_t get_upgrade_package_offset(void)
 {
-	static uint8_t buffer[4 * 1024];
 	{
 		/* Test code to remove */
+		static uint8_t buffer[4 * 1024];
+		boot_upgrade_package_t* package = (boot_upgrade_package_t*)buffer;
+
 		strcpy((char*)buffer, "ZAYA");
+		package->metadata.size = 128;
+
+		return (uint32_t)buffer;
 	}
-	return (uint32_t)buffer;
 }
 
 void jump_to_latest_image(void)
@@ -35,7 +35,6 @@ void jump_to_latest_image(void)
 	LOG_PRINTF(" >> BOOT : Application is being started!");
 	while (1);
 }
-
 
 int main(void) {
 
