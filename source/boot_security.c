@@ -34,7 +34,11 @@
     
 /******************************** VARIABLES ************************************/
 
-static const uint8_t Decryption_Key[DECRYPTION_KEY_LEN_IN_BYTES];
+static const uint8_t Decryption_Key[DECRYPTION_KEY_LEN_IN_BYTES] = 
+{
+	0xA5, 0xD3, 0x07, 0xF1, 0x11, 0x23, 0x37, 0xA3, 0xA8, 0xD1, 0x03, 0xDD, 0x24, 0x93, 0x22, 0xF1,
+    0x34, 0xF9, 0xC4, 0xA5, 0x75, 0x97, 0x98, 0xA7, 0x17, 0xE3, 0xA1, 0x36, 0xC3, 0xBA, 0xC3, 0x13
+};
 
 /**************************** PRIVATE FUNCTIONS *******************************/
 
@@ -58,7 +62,7 @@ void boot_decrypt_upgrade_package(boot_upgrade_package_t* package)
 
     /*
      * Image represents upgrade package in this function,
-     * we use the image such as input  
+     * we use the image such as input
      * 
      */
     uint8_t* input = package->image;
@@ -72,4 +76,11 @@ void boot_decrypt_upgrade_package(boot_upgrade_package_t* package)
     mbedtls_aes_setkey_dec(&aes, Decryption_Key, DECRYPTION_KEY_LEN_IN_BITS);
 
     mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, package->metadata.size, package->metadata.iv, input, output);
+
+    {
+        output[29] = 0;
+        LOG_PRINTF("");
+        LOG_PRINTF("Encrypted message : %s", output);
+        LOG_PRINTF("");
+    }
 }
