@@ -25,6 +25,8 @@ namespace PSABootPackageCreator
         /* TODO Fill here */
         static byte[] signingKey = new byte[128];
 
+
+
         public Form1()
         {
             InitializeComponent();

@@ -55,11 +55,13 @@ namespace PSABootPackageCreator.Crypto
 
     public class RSA
     {
-        public enum KeySize{ None = 0, Key1024 = 128, Key2048 = 256, Key4096 = 512 };
+        
+        public enum KeySize { None = 0, Key1024 = 128, Key2048 = 256, Key4096 = 512 };
 
         KeySize keySize = KeySize.None;
+		
 
-        public RSA(KeySize keySize, byte[] privateKey)
+		public RSA(KeySize keySize, byte[] privateKey)
         {
             if (privateKey.Length != (int)keySize)
             {
@@ -70,8 +72,57 @@ namespace PSABootPackageCreator.Crypto
 
         public byte[] Sign(byte[] data)
         {
+         try
+            {
+                //Create a new instance of RSACryptoServiceProvider.
+                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+                {
+                    //The hash to sign.
+                    byte[] hash;
+                    using (SHA256 sha256 = SHA256.Create())
+                    {
+                        //byte[] orijinaldata = data
+                        hash = sha256.ComputeHash(data);
+                    }
+
+                    //Create an RSASignatureFormatter object and pass it the 
+                    //RSACryptoServiceProvider to transfer the key information.
+                    RSAPKCS1SignatureFormatter RSAFormatter = new RSAPKCS1SignatureFormatter(rsa);
+
+                    //Set the hash algorithm to SHA256.
+                    RSAFormatter.SetHashAlgorithm("SHA256");
+
+                    //Create a signature for HashValue and return it.
+                    byte[] SignedHash = RSAFormatter.CreateSignature(hash);
+                    Console.WriteLine(SignedHash);
+                    //return SignedHash;
+                }
+            }
+
+            catch (CryptographicException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+
             /* Remove the below line once you return a proper signature */
-            return new byte[(int)this.keySize];
+             return new byte[(int)this.keySize];
+             
         }
-    }
+
+
+        }
+
+
+
+
+
+
+
+
+
 }
+
+    
+
+   
