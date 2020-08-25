@@ -55,13 +55,12 @@ namespace PSABootPackageCreator.Crypto
 
     public class RSA
     {
-        
+
         public enum KeySize { None = 0, Key1024 = 128, Key2048 = 256, Key4096 = 512 };
 
         KeySize keySize = KeySize.None;
-		
 
-		public RSA(KeySize keySize, byte[] privateKey)
+        public RSA(KeySize keySize, byte[] privateKey)
         {
             if (privateKey.Length != (int)keySize)
             {
@@ -72,8 +71,10 @@ namespace PSABootPackageCreator.Crypto
 
         public byte[] Sign(byte[] data)
         {
-         try
+            byte[] SignedHash = null;
+            try
             {
+                
                 //Create a new instance of RSACryptoServiceProvider.
                 using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
                 {
@@ -81,7 +82,7 @@ namespace PSABootPackageCreator.Crypto
                     byte[] hash;
                     using (SHA256 sha256 = SHA256.Create())
                     {
-                        //byte[] orijinaldata = data
+
                         hash = sha256.ComputeHash(data);
                     }
 
@@ -93,9 +94,9 @@ namespace PSABootPackageCreator.Crypto
                     RSAFormatter.SetHashAlgorithm("SHA256");
 
                     //Create a signature for HashValue and return it.
-                    byte[] SignedHash = RSAFormatter.CreateSignature(hash);
-                    Console.WriteLine(SignedHash);
-                    //return SignedHash;
+                    SignedHash = RSAFormatter.CreateSignature(hash);
+
+                    return SignedHash;
                 }
             }
 
@@ -103,24 +104,12 @@ namespace PSABootPackageCreator.Crypto
             {
                 Console.WriteLine(e.Message);
             }
-
-
-            /* Remove the below line once you return a proper signature */
-             return new byte[(int)this.keySize];
-             
-        }
-
+            			
+			/* Remove the below line once you return a proper signature */
+			return  SignedHash;
 
         }
-
-
-
-
-
-
-
-
-
+    }
 }
 
     
