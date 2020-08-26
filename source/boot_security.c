@@ -28,15 +28,12 @@
 #define DECRYPTION_KEY_LEN_IN_BITS      256
 #define DECRYPTION_KEY_LEN_IN_BYTES     (DECRYPTION_KEY_LEN_IN_BITS / 8)
 
-
 /*
  * Authentication Key Len
  * We use ECC P256 for authentication.
  * The public key len is 2 key len : 2 x 32
  */
 #define AUTHENTICATION_KEY_LEN_IN_BYTES (64)
-
-
 
 /***************************** TYPE DEFINITIONS ********************************/
 
