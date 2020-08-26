@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Forms;
 
 namespace PSABootPackageCreator.Crypto
 {
@@ -59,8 +61,8 @@ namespace PSABootPackageCreator.Crypto
         public enum KeySize { None = 0, Key1024 = 128, Key2048 = 256, Key4096 = 512 };
 
         KeySize keySize = KeySize.None;
-
-        public RSA(KeySize keySize, byte[] privateKey)
+       
+		public RSA(KeySize keySize, byte[] privateKey)
         {
             if (privateKey.Length != (int)keySize)
             {
@@ -71,44 +73,44 @@ namespace PSABootPackageCreator.Crypto
 
         public byte[] Sign(byte[] data)
         {
-            byte[] SignedHash = null;
-            try
-            {
-                
-                //Create a new instance of RSACryptoServiceProvider.
-                using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
-                {
-                    //The hash to sign.
-                    byte[] hash;
-                    using (SHA256 sha256 = SHA256.Create())
-                    {
 
-                        hash = sha256.ComputeHash(data);
-                    }
+            CngKeyCreationParameters keyCreationParameters = new CngKeyCreationParameters();
+            keyCreationParameters.ExportPolicy = CngExportPolicies.AllowPlaintextExport;
+            keyCreationParameters.KeyUsage = CngKeyUsages.Signing;
 
-                    //Create an RSASignatureFormatter object and pass it the 
-                    //RSACryptoServiceProvider to transfer the key information.
-                    RSAPKCS1SignatureFormatter RSAFormatter = new RSAPKCS1SignatureFormatter(rsa);
+            CngKey key = CngKey.Create(CngAlgorithm.ECDsaP256, null, keyCreationParameters);
 
-                    //Set the hash algorithm to SHA256.
-                    RSAFormatter.SetHashAlgorithm("SHA256");
-
-                    //Create a signature for HashValue and return it.
-                    SignedHash = RSAFormatter.CreateSignature(hash);
-
-                    return SignedHash;
-                }
-            }
-
-            catch (CryptographicException e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            			
-			/* Remove the below line once you return a proper signature */
-			return  SignedHash;
-
+            ECDsaCng dsa = new ECDsaCng(key); //dsa = Digital Signature Algorithm
+            byte[] privateKey = dsa.Key.Export(CngKeyBlobFormat.EccPrivateBlob);
+           
+            CngKey importedKey = CngKey.Import(privateKey, CngKeyBlobFormat.EccPrivateBlob);
+            ECDsaCng importedDSA = new ECDsaCng(importedKey); //dsa = Digital Signature Algorithm
+            byte[] signed = dsa.SignData(data);
+            return signed;
+            
         }
+
+        
+        public void VerifySign(byte[] data, byte[] signed)
+        {
+            CngKeyCreationParameters keyCreationParameters = new CngKeyCreationParameters();
+            keyCreationParameters.ExportPolicy = CngExportPolicies.AllowPlaintextExport;
+            keyCreationParameters.KeyUsage = CngKeyUsages.AllUsages;
+            CngKey key = CngKey.Create(CngAlgorithm.ECDsaP256, null, keyCreationParameters);
+
+            ECDsaCng dsa = new ECDsaCng(key); //dsa = Digital Signature Algorithm
+            
+            byte[] publicKey = dsa.Key.Export(CngKeyBlobFormat.EccPublicBlob);
+
+            using (ECDsaCng ecsdKey = new ECDsaCng(CngKey.Import(publicKey, CngKeyBlobFormat.EccPublicBlob)))
+            {
+                if (ecsdKey.VerifyData(data, signed))
+                    MessageBox.Show("Data is good");
+                else
+                    MessageBox.Show("Data is bad");
+            }
+        }
+
     }
 }
 
