@@ -55,62 +55,63 @@ namespace PSABootPackageCreator.Crypto
         }
     }
 
-    public class RSA
+    public class ECC
     {
-
-        public enum KeySize { None = 0, Key1024 = 128, Key2048 = 256, Key4096 = 512 };
+        public enum KeySize { None = 0, Key256 = 32, Key384 = 48, Key512 = 64 };
 
         KeySize keySize = KeySize.None;
-       
-		public RSA(KeySize keySize, byte[] privateKey)
+        List<byte> signingKeyData = new List<byte>();
+        static readonly byte[] NIST_PRIVATE_KEY_PREFIX = { 0x45, 0x43, 0x53, 0x32, 0x20, 0x00, 0x00, 0x00 };
+        static readonly byte[] NIST_PUBLIC_KEY_PREFIX = { 0x45, 0x43, 0x53, 0x31, 0x20, 0x00, 0x00, 0x00 };
+
+        public ECC(KeySize keySize, byte[] signingKey)
         {
-            if (privateKey.Length != (int)keySize)
+            /* ECC : 2 Key Len for Public + 1 Key Len for Private */
+            int expectedLength = ((int)keySize * 3);
+            if (signingKey.Length != (int)expectedLength)
             {
                 throw new Exception("Invalid Private Key");
             }
+
             this.keySize = keySize;
+            this.signingKeyData.AddRange(NIST_PRIVATE_KEY_PREFIX);
+            this.signingKeyData.AddRange(signingKey);
         }
 
         public byte[] Sign(byte[] data)
         {
+            /* Import the signing key */
+            CngKey signingKey = CngKey.Import(this.signingKeyData.ToArray(), CngKeyBlobFormat.EccPrivateBlob);
 
-            CngKeyCreationParameters keyCreationParameters = new CngKeyCreationParameters();
-            keyCreationParameters.ExportPolicy = CngExportPolicies.AllowPlaintextExport;
-            keyCreationParameters.KeyUsage = CngKeyUsages.Signing;
+            ECDsaCng dsa = new ECDsaCng(signingKey); //dsa = Digital Signature Algorithm
 
-            CngKey key = CngKey.Create(CngAlgorithm.ECDsaP256, null, keyCreationParameters);
+            /* Get the signature of the data using the imported key */
+            byte[] signature = dsa.SignData(data);
 
-            ECDsaCng dsa = new ECDsaCng(key); //dsa = Digital Signature Algorithm
-            byte[] privateKey = dsa.Key.Export(CngKeyBlobFormat.EccPrivateBlob);
-           
-            CngKey importedKey = CngKey.Import(privateKey, CngKeyBlobFormat.EccPrivateBlob);
-            ECDsaCng importedDSA = new ECDsaCng(importedKey); //dsa = Digital Signature Algorithm
-            byte[] signed = dsa.SignData(data);
-            return signed;
-            
+            // Verify for test purposes
+            // bool verified = veriftSignature(data, signature);
+
+            /* Return the signature */
+            return signature;
         }
 
-        
-        public void VerifySign(byte[] data, byte[] signed)
+        private bool veriftSignature(byte[] data, byte[] signature)
         {
-            CngKeyCreationParameters keyCreationParameters = new CngKeyCreationParameters();
-            keyCreationParameters.ExportPolicy = CngExportPolicies.AllowPlaintextExport;
-            keyCreationParameters.KeyUsage = CngKeyUsages.AllUsages;
-            CngKey key = CngKey.Create(CngAlgorithm.ECDsaP256, null, keyCreationParameters);
+            /* 
+             * CngKey expect the public key in NIST format, so prepare it before import
+             */
+            byte[] publicKey = new byte[64 + 8];
+            Array.Copy(NIST_PUBLIC_KEY_PREFIX, 0, publicKey, 0, 8);
+            Array.Copy(signingKeyData.ToArray(), 8, publicKey, 8, 64);
 
-            ECDsaCng dsa = new ECDsaCng(key); //dsa = Digital Signature Algorithm
-            
-            byte[] publicKey = dsa.Key.Export(CngKeyBlobFormat.EccPublicBlob);
+            /* Import the public key for verify */
+            CngKey verifyKey = CngKey.Import(publicKey, CngKeyBlobFormat.EccPublicBlob);
 
-            using (ECDsaCng ecsdKey = new ECDsaCng(CngKey.Import(publicKey, CngKeyBlobFormat.EccPublicBlob)))
+            using (ECDsaCng dsa = new ECDsaCng(verifyKey))
             {
-                if (ecsdKey.VerifyData(data, signed))
-                    MessageBox.Show("Data is good");
-                else
-                    MessageBox.Show("Data is bad");
+                return dsa.VerifyData(data, signature);
             }
         }
-
     }
 }
 
