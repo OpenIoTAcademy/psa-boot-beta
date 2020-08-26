@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace PSABootPackageCreator.Crypto
 {
@@ -53,25 +51,62 @@ namespace PSABootPackageCreator.Crypto
         }
     }
 
-    public class RSA
+    public class ECC
     {
-        public enum KeySize{ None = 0, Key1024 = 128, Key2048 = 256, Key4096 = 512 };
+        public enum KeySize { None = 0, Key256 = 32, Key384 = 48, Key512 = 64 };
 
         KeySize keySize = KeySize.None;
+        List<byte> signingKeyData = new List<byte>();
+        static readonly byte[] NIST_PRIVATE_KEY_PREFIX = { 0x45, 0x43, 0x53, 0x32, 0x20, 0x00, 0x00, 0x00 };
+        static readonly byte[] NIST_PUBLIC_KEY_PREFIX = { 0x45, 0x43, 0x53, 0x31, 0x20, 0x00, 0x00, 0x00 };
 
-        public RSA(KeySize keySize, byte[] privateKey)
+        public ECC(KeySize keySize, byte[] signingKey)
         {
-            if (privateKey.Length != (int)keySize)
+            /* ECC : 2 Key Len for Public + 1 Key Len for Private */
+            int expectedLength = ((int)keySize * 3);
+            if (signingKey.Length != (int)expectedLength)
             {
                 throw new Exception("Invalid Private Key");
             }
+
             this.keySize = keySize;
+            this.signingKeyData.AddRange(NIST_PRIVATE_KEY_PREFIX);
+            this.signingKeyData.AddRange(signingKey);
         }
 
         public byte[] Sign(byte[] data)
         {
-            /* Remove the below line once you return a proper signature */
-            return new byte[(int)this.keySize];
+            /* Import the signing key */
+            CngKey signingKey = CngKey.Import(this.signingKeyData.ToArray(), CngKeyBlobFormat.EccPrivateBlob);
+
+            ECDsaCng dsa = new ECDsaCng(signingKey); //dsa = Digital Signature Algorithm
+
+            /* Get the signature of the data using the imported key */
+            byte[] signature = dsa.SignData(data);
+
+            // Verify for test purposes
+            // bool verified = veriftSignature(data, signature);
+
+            /* Return the signature */
+            return signature;
+        }
+
+        private bool veriftSignature(byte[] data, byte[] signature)
+        {
+            /* 
+             * CngKey expect the public key in NIST format, so prepare it before import
+             */
+            byte[] publicKey = new byte[64 + 8];
+            Array.Copy(NIST_PUBLIC_KEY_PREFIX, 0, publicKey, 0, 8);
+            Array.Copy(signingKeyData.ToArray(), 8, publicKey, 8, 64);
+
+            /* Import the public key for verify */
+            CngKey verifyKey = CngKey.Import(publicKey, CngKeyBlobFormat.EccPublicBlob);
+
+            using (ECDsaCng dsa = new ECDsaCng(verifyKey))
+            {
+                return dsa.VerifyData(data, signature);
+            }
         }
     }
 }
