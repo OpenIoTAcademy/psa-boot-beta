@@ -20,7 +20,7 @@ typedef struct
     /* Decryption initialization vector*/
     uint8_t iv[16];
     /* Signature */
-    uint8_t signature[128];
+    uint8_t signature[64];
 } boot_image_metadata_t;
 
 typedef struct

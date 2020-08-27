@@ -20,6 +20,29 @@
 #include "hal_log.h"
 #include "mbedtls/rsa.h"
 #include "mbedtls/md.h"
+#include "mbedtls/ecp.h"
+#include "mbedtls/ecdsa.h"
+
+#include "mbedtls/sha256.h"
+
+
+
+//#if defined(MBEDTLS_PSA_CRYPTO_C)
+
+//#include "psa_crypto_service_integration.h"
+#include "psa/crypto.h"
+
+
+//#include "psa_crypto_core.h"
+//#include "psa_crypto_invasive.h"
+/*#if defined(MBEDTLS_PSA_CRYPTO_SE_C)
+#include "psa_crypto_se.h"
+#endif
+#include "psa_crypto_slot_management.h"
+    /* Include internal declarations that are useful for implementing persistently
+     * stored keys. */
+//#include "psa_crypto_storage.h"*/
+
 /******************************* MACRO DEFINITIONS ******************************/
 
 /*
@@ -69,31 +92,34 @@ static const uint8_t Authentication_Key[AUTHENTICATION_KEY_LEN_IN_BYTES] =
 
 bool boot_authenticate_upgrade_package(boot_upgrade_package_t* package)
 {
-    mbedtls_rsa_context rsa;
+
+    psa_status_t ecp;
+    //mbedtls_ecp_context aes;
     unsigned char hash[32];
    // int exit_code = MBEDTLS_EXIT_FAILURE;
     //unsigned char buf[10];
     int ret = 1;
+    int ret2,ret3;
+   //#define MBEDTLS_ECP_C
+   
     /*
     * Compute the SHA-256 hash of the input file and
     * verify the signature
     */
     uint8_t* imagePtr = package->image;
     uint8_t* signaturePtr = package->metadata.signature;
-    mbedtls_printf("\n  . Verifying the SHA-256 signature");
-    int mbedtls_md(const mbedtls_md_info_t * MBEDTLS_MD_SHA256, uint8_t * imagePtr, size_t ilen,
-        unsigned char hash);
-    if ((ret = mbedtls_rsa_pkcs1_verify(&rsa, NULL, NULL, MBEDTLS_RSA_PUBLIC,
-        MBEDTLS_MD_SHA256, 20, hash, signaturePtr)) != 0)
-    {
-        mbedtls_printf(" failed\n  ! mbedtls_rsa_pkcs1_verify returned -0x%0x\n\n", -ret);
-        goto exit;
-    }
-    mbedtls_printf("\n  . OK (the signature is valid)\n\n");
-   // exit_code = MBEDTLS_EXIT_SUCCESS;
-//exit:
-    mbedtls_rsa_free(&rsa);
-    return true;
+ 
+    ret = mbedtls_sha256_ret(package->image, package->metadata.size, hash, 0);
+    mbedtls_ecdsa_context ctx_verify;
+  
+    mbedtls_ecdsa_init(&ctx_verify);
+    ret3 = mbedtls_ecdsa_from_keypair(&ctx_verify, Authentication_Key);
+    //mbedtls_ecp_copy(&ctx_verify.Q, Authentication_Key);
+    
+    ret2 = mbedtls_ecdsa_read_signature(&ctx_verify, hash, sizeof(hash), package->metadata.signature, 64);
+    LOG_PRINTF("Authentication : %d", ret2);
+  
+    return ret2;
 }
 
 /*
