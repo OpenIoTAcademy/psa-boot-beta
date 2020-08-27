@@ -27,21 +27,7 @@
 
 
 
-//#if defined(MBEDTLS_PSA_CRYPTO_C)
 
-//#include "psa_crypto_service_integration.h"
-#include "psa/crypto.h"
-
-
-//#include "psa_crypto_core.h"
-//#include "psa_crypto_invasive.h"
-/*#if defined(MBEDTLS_PSA_CRYPTO_SE_C)
-#include "psa_crypto_se.h"
-#endif
-#include "psa_crypto_slot_management.h"
-    /* Include internal declarations that are useful for implementing persistently
-     * stored keys. */
-//#include "psa_crypto_storage.h"*/
 
 /******************************* MACRO DEFINITIONS ******************************/
 
@@ -93,14 +79,11 @@ static const uint8_t Authentication_Key[AUTHENTICATION_KEY_LEN_IN_BYTES] =
 bool boot_authenticate_upgrade_package(boot_upgrade_package_t* package)
 {
 
-    psa_status_t ecp;
     //mbedtls_ecp_context aes;
     unsigned char hash[32];
-   // int exit_code = MBEDTLS_EXIT_FAILURE;
-    //unsigned char buf[10];
     int ret = 1;
     int ret2,ret3;
-   //#define MBEDTLS_ECP_C
+  
    
     /*
     * Compute the SHA-256 hash of the input file and
