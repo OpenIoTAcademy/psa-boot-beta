@@ -71,29 +71,15 @@ bool boot_authenticate_upgrade_package(boot_upgrade_package_t* package)
 {
     mbedtls_rsa_context rsa;
     unsigned char hash[32];
-    int exit_code = MBEDTLS_EXIT_FAILURE;
+   // int exit_code = MBEDTLS_EXIT_FAILURE;
     //unsigned char buf[10];
     int ret = 1;
-    uint8_t imagee[1];
-    boot_image_metadata_t metadataa;
-    uint8_t signaturee[128];
-    int j;
-    for (j = 0; j < 1; j++)
-    {
-        imagee[j] = package->image[j];
-    }
-    metadataa = package->metadata;
-    for (j = 0; j < 128; j++)
-    {
-        signaturee[j] = metadataa.signature[j];
-    }
     /*
-     * Compute the SHA-256 hash of the input file and
-     * verify the signature
-     */
+    * Compute the SHA-256 hash of the input file and
+    * verify the signature
+    */
     uint8_t* imagePtr = package->image;
     uint8_t* signaturePtr = package->metadata.signature;
-
     mbedtls_printf("\n  . Verifying the SHA-256 signature");
     int mbedtls_md(const mbedtls_md_info_t * MBEDTLS_MD_SHA256, uint8_t * imagePtr, size_t ilen,
         unsigned char hash);
@@ -104,8 +90,8 @@ bool boot_authenticate_upgrade_package(boot_upgrade_package_t* package)
         goto exit;
     }
     mbedtls_printf("\n  . OK (the signature is valid)\n\n");
-    exit_code = MBEDTLS_EXIT_SUCCESS;
-exit:
+   // exit_code = MBEDTLS_EXIT_SUCCESS;
+//exit:
     mbedtls_rsa_free(&rsa);
     return true;
 }
