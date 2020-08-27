@@ -25,10 +25,6 @@
 
 #include "mbedtls/sha256.h"
 
-
-
-
-
 /******************************* MACRO DEFINITIONS ******************************/
 
 /*
@@ -61,11 +57,14 @@ static const uint8_t Decryption_Key[DECRYPTION_KEY_LEN_IN_BYTES] =
 };
 
 /*
- * Authentication Key : ECC P256
+ * Authentication Key : ECC P256R1
  * TODO : Move into secure storage
  */
-static const uint8_t Authentication_Key[AUTHENTICATION_KEY_LEN_IN_BYTES] =
+static const uint8_t Authentication_Key[AUTHENTICATION_KEY_LEN_IN_BYTES + 1] =
 {
+    /* Old key format starts with 0x04 prefix */
+    0x04,
+
     0xBB, 0x00, 0x18, 0x3A, 0xF6, 0xE9, 0xCC, 0xC4, 0x80, 0xCE, 0x48, 0xD9, 0x18, 0x93, 0x90, 0x5E,
     0xDA, 0x10, 0x36, 0x4F, 0x7E, 0x79, 0x51, 0x85, 0xA7, 0x1F, 0x1B, 0x27, 0x2A, 0x4C, 0xC2, 0xB6,
     0xF5, 0xE8, 0x5F, 0xE3, 0x1D, 0xA6, 0x39, 0x84, 0x83, 0x25, 0x5B, 0x9B, 0x1D, 0xC0, 0x3C, 0x9E,
@@ -74,35 +73,92 @@ static const uint8_t Authentication_Key[AUTHENTICATION_KEY_LEN_IN_BYTES] =
 
 /**************************** PRIVATE FUNCTIONS *******************************/
 
+/*
+ * @brief gets ecp key pair structure from the raw public key
+ * 
+ * @param public_key public key to convert
+ * @param key_len public key length
+ * @param[out] ecp ecp object to fill
+ * 
+ * @return 0 if success otherwise a negative error
+ * 
+ */
+int get_ecp_keypair(const uint8_t* public_key, size_t key_len, mbedtls_ecp_keypair* ecp)
+{
+    int ret;
+    mbedtls_ecp_keypair_init(ecp);
+    mbedtls_ecp_group_load(&ecp->grp, MBEDTLS_ECP_DP_SECP256R1);
+    ret = mbedtls_ecp_point_read_binary(&ecp->grp, &ecp->Q, public_key, key_len);
+    if (ret != 0) return ret;
+
+    /* Check that the point is on the curve. */
+    return mbedtls_ecp_check_pubkey(&ecp->grp, &ecp->Q);
+}
+
+/*
+ * @brief Verifies a ecdsa signature
+ *
+ * @param ecp ecp instance to keep the public key
+ * @param hash hash to verify
+ * @param hash_length hash length
+ * @param signature signature of the hash
+ * @param signature signature length
+ *
+ * @return true if the verification is success otherwise false
+ *
+ */
+static bool ecdsa_verify_signature(mbedtls_ecp_keypair* ecp, const uint8_t* hash, size_t hash_length, const uint8_t* signature, size_t signature_length)
+{
+    int ret;
+    mbedtls_mpi r, s;
+    #define PSA_BITS_TO_BYTES(bits) (((bits) + 7) / 8)
+    size_t curve_bytes = PSA_BITS_TO_BYTES(ecp->grp.pbits);
+
+    mbedtls_mpi_init(&r);
+    mbedtls_mpi_init(&s);
+
+    if (signature_length != 2 * curve_bytes) {
+        return(-1);
+    }
+
+    MBEDTLS_MPI_CHK(mbedtls_mpi_read_binary(&r, signature, curve_bytes));
+    MBEDTLS_MPI_CHK(mbedtls_mpi_read_binary(&s, signature + curve_bytes, curve_bytes));
+
+    ret = mbedtls_ecdsa_verify(&ecp->grp, hash, hash_length, &ecp->Q, &r, &s);
+
+cleanup:
+    mbedtls_mpi_free(&r);
+    mbedtls_mpi_free(&s);
+
+    return (ret == 0);
+}
 /****************************  PUBLIC FUNCTIONS *******************************/
 
+/*
+ * @brief Authenticates the upgrade package
+ *
+ * @param package to be authenticated upgrade package
+ *
+ * @return true if the authentication is success otherwise false
+ *
+ */
 bool boot_authenticate_upgrade_package(boot_upgrade_package_t* package)
 {
+    uint8_t hash[32];
+    mbedtls_ecp_keypair ecp_keypair;
 
-    //mbedtls_ecp_context aes;
-    unsigned char hash[32];
-    int ret = 1;
-    int ret2,ret3;
-  
-   
     /*
-    * Compute the SHA-256 hash of the input file and
-    * verify the signature
-    */
-    uint8_t* imagePtr = package->image;
-    uint8_t* signaturePtr = package->metadata.signature;
- 
-    ret = mbedtls_sha256_ret(package->image, package->metadata.size, hash, 0);
-    mbedtls_ecdsa_context ctx_verify;
-  
-    mbedtls_ecdsa_init(&ctx_verify);
-    ret3 = mbedtls_ecdsa_from_keypair(&ctx_verify, Authentication_Key);
-    //mbedtls_ecp_copy(&ctx_verify.Q, Authentication_Key);
-    
-    ret2 = mbedtls_ecdsa_read_signature(&ctx_verify, hash, sizeof(hash), package->metadata.signature, 64);
-    LOG_PRINTF("Authentication : %d", ret2);
-  
-    return ret2;
+     * Compute the SHA-256 hash of the input file
+     */ 
+    mbedtls_sha256_ret(package->image, package->metadata.size, hash, false);
+
+    /*
+     * mbedTLS ECDSA verify needs the public key in RFC7748 format in a ECP KeyPair structure
+     */
+    get_ecp_keypair(Authentication_Key, sizeof(Authentication_Key), &ecp_keypair);
+
+    /* Verify the signature of the hash */
+    return ecdsa_verify_signature(&ecp_keypair, hash, sizeof(hash), package->metadata.signature, sizeof(package->metadata.signature));
 }
 
 /*
