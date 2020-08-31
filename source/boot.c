@@ -24,7 +24,7 @@ uint32_t get_upgrade_package_offset(void)
 			// Prefix : ZAYA
 			0x5A, 0x41, 0x59, 0x41,
 			// Version
-			0x01, 0x00, 0x00, 0x00,
+			0x03, 0x00, 0x00, 0x00,
 			// Size
 			0x20, 0x00, 0x00, 0x00,
 			// Reserved
@@ -72,15 +72,23 @@ int main(void) {
 	if (check_for_upgrade())
 	{
 		uint32_t package_offset = get_upgrade_package_offset();
-
+		
 		boot_upgrade_package_t* upgrade_package = (boot_upgrade_package_t*)package_offset;
 
 		if (boot_authenticate_upgrade_package(upgrade_package)) 
 		{
 			LOG_PRINTF(" >> BOOT : Upgrade package authentication : SUCCESS");
-			boot_decrypt_upgrade_package(upgrade_package);
 
-			LOG_PRINTF(" >> BOOT : Upgrade package decryption : SUCCESS");
+			if (upgrade_package->metadata.version <= get_latest_image_version())
+			{
+				LOG_PRINTF(" >> BOOT : Upgrade package version control failed!");
+				block_the_execution();
+			}
+			else
+			{
+				boot_decrypt_upgrade_package(upgrade_package);
+				LOG_PRINTF(" >> BOOT : Upgrade package decryption : SUCCESS");
+			}			
 		}
 		else
 		{
