@@ -118,7 +118,7 @@ static bool ecdsa_verify_signature(mbedtls_ecp_keypair* ecp, const uint8_t* hash
     mbedtls_mpi_init(&s);
 
     if (signature_length != 2 * curve_bytes) {
-        return(-1);
+        return false;
     }
 
     MBEDTLS_MPI_CHK(mbedtls_mpi_read_binary(&r, signature, curve_bytes));
@@ -188,11 +188,4 @@ void boot_decrypt_upgrade_package(boot_upgrade_package_t* package)
     mbedtls_aes_setkey_dec(&aes, Decryption_Key, DECRYPTION_KEY_LEN_IN_BITS);
 
     mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, package->metadata.size, package->metadata.iv, input, output);
-
-    {
-        output[29] = 0;
-        LOG_PRINTF("");
-        LOG_PRINTF("Encrypted message : %s", output);
-        LOG_PRINTF("");
-    }
 }
