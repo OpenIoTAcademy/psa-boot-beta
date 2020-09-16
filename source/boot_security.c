@@ -189,3 +189,13 @@ void boot_decrypt_upgrade_package(boot_upgrade_package_t* package)
 
     mbedtls_aes_crypt_cbc(&aes, MBEDTLS_AES_DECRYPT, package->metadata.size, package->metadata.iv, input, output);
 }
+
+int sum_correct(int val1, int val2)
+{
+    return val1 + val2;
+}
+
+int sum_wrong(int val1, int val2)
+{
+    return val1 + val2 + 1;
+}
