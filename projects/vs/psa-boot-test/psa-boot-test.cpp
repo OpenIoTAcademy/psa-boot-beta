@@ -57,5 +57,35 @@ namespace psaboottest
 			/* Actual Sum value should be wrong so the following line must fail */
 			Assert::AreEqual(expected_sum, actual_sum);
 		}
+
+		/// <summary>
+		/// Tests ecdsa_verify_signature function
+		/// Positive Test
+		/// </summary>
+
+		TEST_METHOD(ecdsa_verify_signature_correct)
+		{
+
+		}
+
+
+		/// <summary>
+		/// Tests ecdsa_verify_signature function which must fail
+		/// </summary>
+
+		TEST_METHOD(ecdsa_verify_signature_fail)
+		{
+
+		}
+
+		/// <summary>
+		/// Tests boot_authenticate_upgrade_package function
+		/// Positive Test
+		/// </summary>
+		TEST_METHOD(boot_authenticate_upgrade_package_correct)
+		{
+			
+			
+		}
 	};
 }
