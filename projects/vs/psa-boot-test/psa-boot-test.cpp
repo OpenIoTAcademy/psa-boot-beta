@@ -9,8 +9,8 @@ namespace psaboottest
 {
 	TEST_CLASS(psaboottest)
 	{
-		#define GET_TEST_PACKAGE(_pack)				(boot_upgrade_package_t*)copy_package(_pack, sizeof(_pack))
-		#define RELEASE_TEST_PACKAGE(_pack)			free(_pack)
+#define GET_TEST_PACKAGE(_pack)				(boot_upgrade_package_t*)copy_package(_pack, sizeof(_pack))
+#define RELEASE_TEST_PACKAGE(_pack)			free(_pack)
 
 	private:
 		/// <summary>
@@ -61,7 +61,7 @@ namespace psaboottest
 
 				/* We should have encrypted image so, strings should not be the same before decryption */
 				Assert::IsFalse(isEqual);
-				
+
 				/* Let us decrypt the valid package */
 				boot_decrypt_upgrade_package(package);
 
@@ -69,6 +69,29 @@ namespace psaboottest
 
 				/* After the encryption, the image must be the same with expected plain image */
 				Assert::IsTrue(isEqual);
+			}
+			RELEASE_TEST_PACKAGE(package);
+		}
+		/// <summary>
+		/// Tests boot_decrypt_upgrade_package() function using a invalid
+		/// upgrade package
+		/// </summary>
+		TEST_METHOD(decryption_test_invalid)
+		{
+			boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_invalid_package);
+			{
+				bool isEqual = strings_are_equal(package->image, td_valid_package_plain_image_content);
+
+				/* We should have encrypted image so, strings should not be the same before decryption */
+				Assert::IsFalse(isEqual);
+
+				/* Let us decrypt the valid package */
+				boot_decrypt_upgrade_package(package);
+
+				isEqual = strings_are_equal(package->image, td_valid_package_plain_image_content);
+
+				/* After the encryption, the image must be the same with expected plain image */
+				Assert::IsFalse(isEqual);
 			}
 			RELEASE_TEST_PACKAGE(package);
 		}
