@@ -90,7 +90,7 @@ namespace psaboottest
 
 				isEqual = strings_are_equal(package->image, td_valid_package_plain_image_content);
 
-				/* After the encryption, the image must be the same with expected plain image */
+				/* After the encryption, the image musn't be the same with expected plain image */
 				Assert::IsFalse(isEqual);
 			}
 			RELEASE_TEST_PACKAGE(package);
