@@ -9,8 +9,8 @@ namespace psaboottest
 {
 	TEST_CLASS(psaboottest)
 	{
-#define GET_TEST_PACKAGE(_pack)				(boot_upgrade_package_t*)copy_package(_pack, sizeof(_pack))
-#define RELEASE_TEST_PACKAGE(_pack)			free(_pack)
+			#define GET_TEST_PACKAGE(_pack)				(boot_upgrade_package_t*)copy_package(_pack, sizeof(_pack))
+			#define RELEASE_TEST_PACKAGE(_pack)			free(_pack)
 
 	private:
 		/// <summary>
@@ -95,5 +95,7 @@ namespace psaboottest
 			}
 			RELEASE_TEST_PACKAGE(package);
 		}
+
+					
 	};
 }
