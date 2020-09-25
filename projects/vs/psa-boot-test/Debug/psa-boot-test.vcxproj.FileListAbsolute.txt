@@ -1,0 +1,2 @@
+C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\projects\vs\psa-boot-test\Debug\psa-boot-test.vcxprojAssemblyReference.cache
+C:\Users\ozdem\OneDrive\Desktop\psa-boot-beta\projects\vs\psa-boot-test\Debug\psa-boot-test.vcxproj.CopyComplete

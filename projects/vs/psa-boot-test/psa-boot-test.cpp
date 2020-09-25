@@ -113,7 +113,56 @@ namespace PSABootTests
             }
             RELEASE_TEST_PACKAGE(package);
         }
-    };
+        TEST_METHOD(decryption_test_invalid_signature)
+        {
+            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_signature);
+            {
+                bool isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+                /* We should have encrypted image so, strings should not be the same before decryption */
+                Assert::IsFalse(isEqual);
+                /* Let us decrypt the valid package */
+                boot_decrypt_upgrade_package(package);
+                isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+                /* After the encryption, the image must not be the same with expected plain image */
+                Assert::IsFalse(isEqual);
+            }
+            RELEASE_TEST_PACKAGE(package);
+        }
+
+        TEST_METHOD(decryption_test_invalid_prefix)
+        {
+            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_prefix);
+            {
+                bool isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_prefix_content, td_valid_package_plain_image_prefix_len);
+                /* We should have encrypted image so, strings should not be the same before decryption */
+                Assert::IsFalse(isEqual);
+                /* Let us decrypt the valid package */
+                boot_decrypt_upgrade_package(package);
+                isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_prefix_content, td_valid_package_plain_image_prefix_len);
+                /* After the encryption, the image must not be the same with expected plain image */
+                Assert::IsFalse(isEqual);
+
+            }
+            RELEASE_TEST_PACKAGE(package);
+        }
+        TEST_METHOD(decryption_test_invalid_size)
+        {
+            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_size);
+            {
+                bool isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+                /* We should have encrypted image so, strings should not be the same before decryption */
+                Assert::IsFalse(isEqual);
+                /* Let us decrypt the valid package */
+                boot_decrypt_upgrade_package(package);
+                isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+                /* After the encryption, the image must not be the same with expected plain image */
+                Assert::IsFalse(isEqual);
+            }
+            RELEASE_TEST_PACKAGE(package);
+
+        }
+
+        };
 
     TEST_CLASS(PerformanceTests)
     {
