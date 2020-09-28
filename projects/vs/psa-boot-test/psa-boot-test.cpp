@@ -47,8 +47,10 @@ namespace PSABootTests
     {
     public:
         /// <summary>
-        /// Tests boot_decrypt_upgrade_package() function using a valid
-        /// upgrade package
+        /// In this case, we use a valid package 
+        /// that is encrypted with the encryption key. 
+        /// The decrypted image must be the same as 
+        /// the expected plain image value.
         /// </summary>
         TEST_METHOD(decryption_test_valid_image)
         {
@@ -69,11 +71,31 @@ namespace PSABootTests
             }
             RELEASE_TEST_PACKAGE(package);
         }
+        /// <summary>
+        /// In this case, we use a valid package 
+        /// that is signed with the signing private key.
+        /// The image must be authenticated 
+        /// using the signing public key. 
+        /// </summary>
+        TEST_METHOD(authenticate_test_valid_image)
+        {
+            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_valid);
+            {
+               
+            }
+            RELEASE_TEST_PACKAGE(package);
+        }
     };
 
     TEST_CLASS(NegativeCases)
     {
     public:
+        /// <summary>
+        /// In this case, we use an invalid package 
+        /// that has an invalid IV(Initialisation Vector).
+        /// The decrypted image must not be the same as 
+        /// the expected plain image value.
+        /// </summary>
         TEST_METHOD(decryption_test_invalid_image)
         {
             boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_image);
@@ -94,6 +116,12 @@ namespace PSABootTests
             RELEASE_TEST_PACKAGE(package);
         }
 
+        /// <summary>
+        /// In this case, we use an invalid package 
+        /// that has an invalid IV(Initialisation Vector).
+        /// The decrypted image must not be the same as 
+        /// the expected plain image value.
+        /// </summary>
         TEST_METHOD(decryption_test_invalid_IV)
         {
             boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_IV);
@@ -118,50 +146,104 @@ namespace PSABootTests
             boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_signature);
             {
                 bool isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+
                 /* We should have encrypted image so, strings should not be the same before decryption */
                 Assert::IsFalse(isEqual);
+
                 /* Let us decrypt the valid package */
                 boot_decrypt_upgrade_package(package);
+
                 isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+
                 /* After the encryption, the image must not be the same with expected plain image */
                 Assert::IsFalse(isEqual);
             }
             RELEASE_TEST_PACKAGE(package);
         }
-
-        TEST_METHOD(decryption_test_invalid_prefix)
+        /// <summary>
+        /// In this case, we use an invalid package 
+        /// that has a wrong size.
+        /// The decrypted image must not be the same as 
+        /// the expected plain image value. 
+        /// </summary>
+        TEST_METHOD(decryption_test_wrong_size)
         {
-            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_prefix);
-            {
-                bool isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_prefix_content, td_valid_package_plain_image_prefix_len);
-                /* We should have encrypted image so, strings should not be the same before decryption */
-                Assert::IsFalse(isEqual);
-                /* Let us decrypt the valid package */
-                boot_decrypt_upgrade_package(package);
-                isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_prefix_content, td_valid_package_plain_image_prefix_len);
-                /* After the encryption, the image must not be the same with expected plain image */
-                Assert::IsFalse(isEqual);
-
-            }
-            RELEASE_TEST_PACKAGE(package);
-        }
-        TEST_METHOD(decryption_test_invalid_size)
-        {
-            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_size);
+            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_wrong_size);
             {
                 bool isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+
                 /* We should have encrypted image so, strings should not be the same before decryption */
                 Assert::IsFalse(isEqual);
+
                 /* Let us decrypt the valid package */
                 boot_decrypt_upgrade_package(package);
+
                 isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+
                 /* After the encryption, the image must not be the same with expected plain image */
                 Assert::IsFalse(isEqual);
             }
             RELEASE_TEST_PACKAGE(package);
 
-        }
+        }        
+            /// <summary>
+            /// In this case, we use a valid package 
+            /// that is signed with the signing private key.
+            /// The image must be authenticated 
+            /// using the signing public key. 
+            /// </summary>
+        TEST_METHOD(authentication_test_invalid_image)
+        {
+            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_image);
+            {
+                 /* Let us  the valid package */
+                 boot_authenticate_upgrade_package(package);
 
+                 bool isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+
+                 /* the image must not be the same with expected plain image */
+                 Assert::IsFalse(isEqual);
+            }
+        }
+        /// <summary>
+        /// In this case, we use an invalid package 
+        /// that has a wrong size.
+        /// The image must not be authenticated 
+        /// using the signing public key.
+        /// </summary>
+     
+        TEST_METHOD(authentication_test_wrong_size)
+        {
+            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_wrong_size);
+            {
+                /* Let us  the valid package */
+                boot_authenticate_upgrade_package(package);
+
+                bool  isEqual = arrays_are_equal(package->image, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+                /*  the image must not be the same with expected plain image */
+                Assert::IsFalse(isEqual);
+            }
+            RELEASE_TEST_PACKAGE(package);
+        }
+        /// <summary>
+        /// In this case, we use an invalid package 
+        /// that has an invalid signature.
+        /// The image must not be authenticated 
+        /// using the signing public key. 
+        /// </summary>
+        TEST_METHOD(authentication_test_invalid_signature)
+        {
+            boot_upgrade_package_t* package = GET_TEST_PACKAGE(td_package_invalid_signature);
+            {
+                /* Let us the valid package */
+                boot_authenticate_upgrade_package(package);
+                bool isEqual = arrays_are_equal(package->metadata.signature, td_valid_package_plain_image_content, td_valid_package_plain_image_len);
+                /*  the image must not be the same with expected plain image */
+                Assert::IsFalse(isEqual);
+            }
+            RELEASE_TEST_PACKAGE(package);
+        }
+               
         };
 
     TEST_CLASS(PerformanceTests)

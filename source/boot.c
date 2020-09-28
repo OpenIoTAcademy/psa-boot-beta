@@ -74,6 +74,8 @@ int main(void) {
         uint32_t package_offset = get_upgrade_package_offset();
 
         boot_upgrade_package_t* upgrade_package = (boot_upgrade_package_t*)package_offset;
+        
+        upgrade_package->metadata.prefix == "ZAYA";
 
         if (boot_authenticate_upgrade_package(upgrade_package))
         {

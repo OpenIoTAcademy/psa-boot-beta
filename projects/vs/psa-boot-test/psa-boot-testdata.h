@@ -27,8 +27,6 @@ static const uint8_t td_package_valid[] = {
 
 static const uint8_t td_valid_package_plain_image_content[] = "Application Image is success!";
 static const uint8_t td_valid_package_plain_image_len = sizeof(td_valid_package_plain_image_content) - 1;
-static const uint8_t td_valid_package_plain_image_prefix_content[] = "ZAYA";
-static const uint8_t td_valid_package_plain_image_prefix_len = sizeof(td_valid_package_plain_image_content) - 1;
 
 static const uint8_t td_package_invalid_image[] = {
     // Prefix : ZAYA
@@ -112,7 +110,7 @@ static const uint8_t td_package_invalid_prefix[] = {
     0xE0, 0x6E, 0xEF, 0x6F, 0x66, 0x34, 0xF5, 0x4C, 0x3B, 0x56, 0x7D, 0x4B, 0x24, 0x6A, 0xA4, 0x23,
     0x73, 0xD8, 0xA0, 0xD9, 0x74, 0xD8, 0x59, 0x70, 0x02, 0x43, 0x32, 0x3F, 0xBC, 0xD2, 0xBB, 0x0B
 };
-static const uint8_t td_package_invalid_size[] = {
+static const uint8_t td_package_wrong_size[] = {
     // Prefix : ZAYA
     0x5A, 0x41, 0x59, 0x41,
     // Version
