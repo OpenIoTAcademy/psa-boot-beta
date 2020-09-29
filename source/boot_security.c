@@ -178,7 +178,7 @@ void boot_decrypt_upgrade_package(boot_upgrade_package_t* package)
      * 
      */
     uint8_t* input = package->image;
-       
+
     /*
      * We will be decrypting the same memory location
      * so let the input and the output be the same.
